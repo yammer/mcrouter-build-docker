@@ -11,4 +11,4 @@ cp bin/mcrouter $BIN_DIR
 
 echo "Building package"
 VERSION=$1
-fpm -s dir -t deb -C "$DIR" -n yammer-mcrouter -v $VERSION  -a amd64 --description "Facebook MCRouter" --maintainer $(whoami)  -C $DIR   .
+fpm -s dir -t deb -C "$DIR" -n yammer-mcrouter -v $VERSION -a amd64 --description "mcrouter" --maintainer "bmorton@yammer-inc.com" -C $DIR .

@@ -3,6 +3,7 @@
 # Email : hemanth[dot]hm[at]gmail[dot]com
 # License : GNU GPLv3
 #
+# From: http://h3manth.com/content/copying-shared-library-dependencies
 
 function useage()
 {

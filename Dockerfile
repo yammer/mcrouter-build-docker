@@ -5,22 +5,22 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 RUN apt-get -y update && apt-get -y install curl sudo wget
 
-ENV FOLLY_VERSION master
-ENV MCROUTER_VERSION 0.9.0
+ENV FOLLY_SHA f63b080574f6a139c952fe2a0c06f16fdf170042
+ENV MCROUTER_VERSION 0.9
 ENV MCROUTER_SHA e1d90728efc109f1c7258d36b641264a56bd04a8
 
 WORKDIR /tmp
-RUN curl -L https://github.com/facebook/folly/archive/${FOLLY_VERSION}.tar.gz | tar xvz
-RUN curl -L https://github.com/facebook/mcrouter/archive/v${MCROUTER_VERSION}.tar.gz | tar xvz
+RUN curl -L https://github.com/facebook/folly/archive/${FOLLY_SHA}.tar.gz | tar xvz
+RUN curl -L https://github.com/facebook/mcrouter/archive/${MCROUTER_SHA}.tar.gz | tar xvz
 
-WORKDIR /tmp/folly-${FOLLY_VERSION}/folly
+WORKDIR /tmp/folly-${FOLLY_SHA}/folly
 RUN apt-get -y update && ./build/deps_ubuntu_12.04.sh
 RUN apt-get -y install libboost-program-options1.54-dev
 RUN autoreconf -ivf && ./configure
 RUN make -j4
 RUN make install
 
-WORKDIR /tmp/mcrouter-${MCROUTER_VERSION}/mcrouter
+WORKDIR /tmp/mcrouter-${MCROUTER_SHA}/mcrouter
 ENV LDFLAGS -Wl,-rpath=/usr/local/lib/mcrouter/
 ENV LD_LIBRARY_PATH /usr/local/lib/mcrouter/
 RUN mkdir /tmp/mcrouter-build && ./scripts/install_ubuntu_12.04.sh /tmp/mcrouter-build -j4
