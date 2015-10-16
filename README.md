@@ -1,6 +1,6 @@
 # mcrouter package builder
 
-This `Dockerfile` will create a `.deb` package for [mcrouter](https://github.com/facebook/mcrouter).
+This `Dockerfile` will create a `.deb` package for [mcrouter](https://github.com/facebook/mcrouter) for use on Ubuntu 12.04.  Yammer uses this package to deploy mcrouter to its production environments.
 
 
 ## Building
