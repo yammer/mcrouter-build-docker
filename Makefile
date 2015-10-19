@@ -8,7 +8,7 @@ all: build cp
 
 build:
 	sed "1 s/__RELEASE__/${RELEASE}/" Dockerfile > Dockerfile-${RELEASE}
-	docker build --no-cache -t mcrouter -f Dockerfile-${RELEASE} .
+	docker build -t mcrouter -f Dockerfile-${RELEASE} .
 
 cp:
 	mkdir ./${RELEASE}
