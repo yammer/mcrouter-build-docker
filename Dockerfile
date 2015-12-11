@@ -1,8 +1,8 @@
 FROM ubuntu:12.04
 MAINTAINER Brian Morton "bmorton@yammer-inc.com"
 
-ENV MCROUTER_VERSION 0.13
-ENV MCROUTER_SHA f2d1f37f503bc54a14774ece167bc65a2aab6f44
+ENV MCROUTER_VERSION 0.15
+ENV MCROUTER_SHA f1f40cc225a56369f14d3b5f39ef5d4f122dda3f
 
 # Install tools needed by install scripts below
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
