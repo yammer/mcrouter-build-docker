@@ -1,8 +1,9 @@
-FROM ubuntu:12.04
+FROM ubuntu:__UBUNTU_RELEASE__
 MAINTAINER Brian Morton "bmorton@yammer-inc.com"
 
-ENV MCROUTER_VERSION 0.15
-ENV MCROUTER_SHA f1f40cc225a56369f14d3b5f39ef5d4f122dda3f
+ENV MCROUTER_VERSION __MCROUTER_VERSION__
+ENV MCROUTER_SHA __MCROUTER_SHA__
+ENV UBUNTU_RELEASE __UBUNTU_RELEASE__
 
 # Install tools needed by install scripts below
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
@@ -16,9 +17,10 @@ RUN curl -L https://github.com/facebook/mcrouter/archive/${MCROUTER_SHA}.tar.gz 
 WORKDIR /tmp/mcrouter-${MCROUTER_SHA}/mcrouter
 ENV LDFLAGS -Wl,-rpath=/usr/local/lib/mcrouter/
 ENV LD_LIBRARY_PATH /usr/local/lib/mcrouter/
-RUN mkdir /tmp/mcrouter-build && ./scripts/install_ubuntu_12.04.sh /tmp/mcrouter-build
+RUN mkdir /tmp/mcrouter-build && ./scripts/install_ubuntu_${UBUNTU_RELEASE}.sh /tmp/mcrouter-build
 
 # Install Ruby so we can install fpm for building the Debian package
+RUN apt-get install -y python-software-properties
 RUN add-apt-repository ppa:brightbox/ruby-ng
 RUN apt-get -y update && apt-get -y install ruby2.1 ruby2.1-dev
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc

@@ -1,15 +1,24 @@
-VERSION = `grep "ENV MCROUTER_VERSION" Dockerfile | cut -f3 -d' '`
-SHA = `grep "ENV MCROUTER_SHA" Dockerfile | cut -f3 -d' '`
+UBUNTU_RELEASE = "14.04"
+MCROUTER_VERSION = $(shell git ls-remote --tags https://github.com/facebook/mcrouter.git | sort -t '/' -k 3 -V | tail -n1 | awk '{print $$1}')
+MCROUTER_SHA = $(shell git ls-remote --tags https://github.com/facebook/mcrouter.git | sort -t '/' -k 3 -V | tail -n1 | awk '{print $$2}' | awk -F\/ '{print $$3}')
+MCROUTER_SHA = "bbc2a529cd5f2a5796e4d2fadecf4db86a9ac7be"
 
 .PHONY: all build cp
 
 all: build cp
 
 build:
-	docker build -t mcrouter .
+	sed "s/__UBUNTU_RELEASE__/${UBUNTU_RELEASE}/g" Dockerfile > Dockerfile-${UBUNTU_RELEASE}
+	sed -i "s/__MCROUTER_VERSION__/${MCROUTER_VERSION}/g" Dockerfile-${UBUNTU_RELEASE}
+	sed -i "s/__MCROUTER_SHA__/${MCROUTER_SHA}/g" Dockerfile-${UBUNTU_RELEASE}
+	docker build -t mcrouter -f Dockerfile-${UBUNTU_RELEASE} .
 
 cp:
-	docker create --name=mcrouter-build mcrouter && docker cp mcrouter-build:/tmp/mcrouter-build/install/yammer-mcrouter_${VERSION}-${SHA}_amd64.deb . && docker rm -f mcrouter-build
+	mkdir -p ./${UBUNTU_RELEASE}
+	docker create --name=mcrouter-build mcrouter && docker cp mcrouter-build:/tmp/mcrouter-build/install/yammer-mcrouter_${MCROUTER_VERSION}-${MCROUTER_SHA}_amd64.deb . && docker rm -f mcrouter-build
 
 test:
-	docker run -ti --rm -v `pwd`:/opt/mcrouter-build ubuntu:12.04 sh -c "dpkg -i /opt/mcrouter-build/yammer-mcrouter_${VERSION}-${SHA}_amd64.deb; mcrouter --version; /bin/bash"
+	docker run -ti --rm -v `pwd`:/opt/mcrouter-build ubuntu:12.04 sh -c "dpkg -i /opt/mcrouter-build/yammer-mcrouter_${MCROUTER_VERSION}-${MCROUTER_SHA}_amd64.deb; mcrouter --version; /bin/bash"
+
+clean:
+		rm -f Dockerfile-*
