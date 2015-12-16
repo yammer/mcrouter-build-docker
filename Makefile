@@ -17,7 +17,7 @@ cp:
 	docker create --name=mcrouter-build mcrouter && docker cp mcrouter-build:/tmp/mcrouter-build/install/yammer-mcrouter_${MCROUTER_VERSION}-${MCROUTER_SHA}_amd64.deb . && docker rm -f mcrouter-build
 
 test:
-	docker run -ti --rm -v `pwd`:/opt/mcrouter-build ubuntu:12.04 sh -c "dpkg -i /opt/mcrouter-build/yammer-mcrouter_${MCROUTER_VERSION}-${MCROUTER_SHA}_amd64.deb; mcrouter --version; /bin/bash"
+	docker run -ti --rm -v `pwd`:/opt/mcrouter-build ubuntu:${UBUNTU_RELEASE} sh -c "dpkg -i /opt/mcrouter-build/yammer-mcrouter_${MCROUTER_VERSION}-${MCROUTER_SHA}_amd64.deb; mcrouter --version; /bin/bash"
 
 clean:
 		rm -f Dockerfile-*

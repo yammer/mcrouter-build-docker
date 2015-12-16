@@ -20,7 +20,7 @@ ENV LD_LIBRARY_PATH /usr/local/lib/mcrouter/
 RUN mkdir /tmp/mcrouter-build && ./scripts/install_ubuntu_${UBUNTU_RELEASE}.sh /tmp/mcrouter-build
 
 # Install Ruby so we can install fpm for building the Debian package
-RUN apt-get install -y python-software-properties
+RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:brightbox/ruby-ng
 RUN apt-get -y update && apt-get -y install ruby2.1 ruby2.1-dev
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
