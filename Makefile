@@ -1,7 +1,6 @@
 UBUNTU_RELEASE = "14.04"
 MCROUTER_VERSION = $(shell git ls-remote --tags https://github.com/facebook/mcrouter.git | sort -t '/' -k 3 -V | tail -n1 | awk '{print $$1}')
 MCROUTER_SHA = $(shell git ls-remote --tags https://github.com/facebook/mcrouter.git | sort -t '/' -k 3 -V | tail -n1 | awk '{print $$2}' | awk -F\/ '{print $$3}')
-MCROUTER_SHA = "bbc2a529cd5f2a5796e4d2fadecf4db86a9ac7be"
 
 .PHONY: all build cp
 
